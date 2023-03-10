@@ -1,6 +1,7 @@
 const Moderator = require("../../models/Moderator");
 const Governement = require("../../models/Governement");
 const { moderators } = require("../../utils/moderators");
+const { sendModeratorEmail } = require("./mails");
 
 const addToDb = async () => {
   const databaseModerators = await Moderator.find({});
@@ -44,6 +45,7 @@ const chooseModerators = async (governement) => {
 const updateChoosedModerator = async (choosedMods, sprint) => {
   await Moderator.updateOne(choosedMods[0], [{ $set: { isChoosable: false } }, { $set: { selectedSprint: sprint } }]);
   await Moderator.updateOne(choosedMods[1], [{ $set: { isChoosable: false } }, { $set: { selectedSprint: sprint } }]);
+  await sendModeratorEmail(choosedMods[0], choosedMods[1]);
 };
 
 module.exports = { addToDb, initGovernement, chooseModerators, updateChoosedModerator };
