@@ -13,7 +13,7 @@ const addToDb = async () => {
 const initGovernement = async () => {
   let governement = await Governement.findOne({});
   if (!governement) {
-    governement = new Governement({ skipWeek: false, sprintCount: 0, selectedSprint: null });
+    governement = new Governement({ skipWeek: false, sprintCount: 0 });
     await governement.save();
   }
   return governement;
@@ -31,7 +31,13 @@ const chooseModerators = async (governement) => {
     governement.sprintCount++;
     governement.skipWeek = !governement.skipWeek;
     await governement.save();
-    return await Moderator.aggregate([{ $match: { isChoosable: true } }, { $sample: { size: 2 } }]);
+    return await Moderator.aggregate([
+      {
+        $match: { $expr: { $lt: ["$selectedSprint", governement.sprintCount - 2] } },
+      },
+      { $match: { isChoosable: true } },
+      { $sample: { size: 2 } },
+    ]);
   }
 };
 

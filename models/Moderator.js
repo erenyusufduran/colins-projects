@@ -16,7 +16,7 @@ const moderatorSchema = new mongoose.Schema({
   },
   selectedSprint: {
     type: Number,
-    default: -1,
+    default: -3,
   },
 });
 
