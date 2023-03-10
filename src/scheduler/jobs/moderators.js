@@ -21,7 +21,7 @@ const initGovernement = async () => {
 };
 
 const chooseModerators = async (governement) => {
-  if (governement.sprintCount % 4 === 0 && !governement.skipWeek) {
+  if (governement.sprintCount % Math.floor(moderators.length / 2) === 0 && !governement.skipWeek) {
     const mods = Moderator.find({});
     await Moderator.updateMany(mods, { $set: { isChoosable: true } });
   }
