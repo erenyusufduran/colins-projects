@@ -1,26 +1,9 @@
 const Moderator = require("../../models/Moderator");
-const Governement = require("../../models/Governement");
-const { moderators } = require("../../utils/moderators");
 const { sendModeratorEmail } = require("./mails");
 
-const addToDb = async () => {
-  const databaseModerators = await Moderator.find({});
-  if (databaseModerators.length === 0) {
-    await Moderator.insertMany(moderators);
-  }
-  return await Moderator.find({});
-};
-
-const initGovernement = async () => {
-  let governement = await Governement.findOne({});
-  if (!governement) {
-    governement = new Governement({ skipWeek: false, sprintCount: 0 });
-    await governement.save();
-  }
-  return governement;
-};
-
 const chooseModerators = async (governement) => {
+  const moderators = await Moderator.find({});
+
   if (governement.sprintCount % Math.floor(moderators.length / 2) === 0 && !governement.skipWeek) {
     const mods = Moderator.find({});
     await Moderator.updateMany(mods, { $set: { isChoosable: true } });
@@ -29,16 +12,17 @@ const chooseModerators = async (governement) => {
     governement.skipWeek = !governement.skipWeek;
     await governement.save();
   } else {
-    governement.sprintCount++;
-    governement.skipWeek = !governement.skipWeek;
-    await governement.save();
-    return await Moderator.aggregate([
+    const choosedMods = await Moderator.aggregate([
       {
-        $match: { $expr: { $lt: ["$selectedSprint", governement.sprintCount - 2] } },
+        $match: { $expr: { $lt: ["$selectedSprint", governement.sprintCount - 1] } },
       },
       { $match: { isChoosable: true } },
       { $sample: { size: 2 } },
     ]);
+    governement.sprintCount++;
+    governement.skipWeek = !governement.skipWeek;
+    await governement.save();
+    return choosedMods;
   }
 };
 
@@ -48,4 +32,4 @@ const updateChoosedModerator = async (choosedMods, sprint) => {
   await sendModeratorEmail(choosedMods[0], choosedMods[1]);
 };
 
-module.exports = { addToDb, initGovernement, chooseModerators, updateChoosedModerator };
+module.exports = { chooseModerators, updateChoosedModerator };

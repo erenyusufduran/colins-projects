@@ -1,3 +1,4 @@
+// Current moderators
 const moderators = [
   { name: "Yağmur", surname: "Akın" },
   { name: "Büşra", surname: "Biner" },

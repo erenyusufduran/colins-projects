@@ -10,7 +10,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
   try {
     cronMethod.start();
-    res.send("Cron started.");
+    res.send("Cron started");
   } catch (error) {
     console.log(error);
     res.send({ error: "Something went wrong!" });

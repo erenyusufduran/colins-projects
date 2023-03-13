@@ -27,3 +27,6 @@ const sendModeratorEmail = async (firstMod, secondMod) => {
 module.exports = {
   sendModeratorEmail,
 };
+
+// API Uygulaması JSON placeholder
+// JSON server npm paketi
