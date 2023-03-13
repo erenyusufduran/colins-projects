@@ -2,6 +2,7 @@ const Moderator = require("../../models/Moderator");
 const Governement = require("../../models/Governement");
 const { moderators } = require("../../utils/moderators");
 
+// adds current moderators to db, and returns moderators from db.
 const addToDb = async () => {
   const databaseModerators = await Moderator.find({});
   if (databaseModerators.length === 0) {
@@ -10,6 +11,7 @@ const addToDb = async () => {
   return await Moderator.find({});
 };
 
+// adds governement for management
 const initGovernement = async () => {
   let governement = await Governement.findOne({});
   if (!governement) {
