@@ -6,7 +6,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   const response = await axios({
     method: "get",
-    url: "https://jsonplaceholder.typicode.com/users",
+    url: "https://jsonplaceholder.typicode.com/users/",
   });
   res.send(response.data);
 });

@@ -6,8 +6,9 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   const response = await axios({
     method: "get",
-    url: "https://jsonplaceholder.typicode.com/photos",
+    url: "https://jsonplaceholder.typicode.com/photos/",
   });
   res.send(response.data);
 });
+
 module.exports = router;
