@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
+const { model, Schema } = require("mongoose");
 const validator = require("validator");
 const bcrpyt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
     email: {
@@ -73,6 +73,6 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-const User = mongoose.model("User", userSchema);
+const User = model("User", userSchema);
 
 module.exports = User;
