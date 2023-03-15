@@ -8,7 +8,7 @@
     <link rel="icon" href="/img/favicon.png" />
     <link rel="stylesheet" href="/css/styles.min.css" />
   </head>
-  <body>
+  <body onload="registerOnload()">
     <div class="centered-form">
       <div class="centered-form__box">
         <h1>Register</h1>
@@ -21,6 +21,7 @@
           <input type="password" name="password" placeholder="Password" required min="6" />
           <button type="submit">Sign Up</button>
         </form>
+        <span class="sign-up-span">If you have an account <a href="/login.html">Sign In</a></span>
       </div>
     </div>
 

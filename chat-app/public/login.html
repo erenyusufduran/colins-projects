@@ -8,7 +8,7 @@
     <link rel="icon" href="/img/favicon.png" />
     <link rel="stylesheet" href="/css/styles.min.css" />
   </head>
-  <body onload="onload()">
+  <body onload="loginOnload()">
     <div class="centered-form">
       <div class="centered-form__box">
         <h1>Login</h1>
@@ -19,18 +19,9 @@
           <input type="password" name="password" placeholder="Password" required min="6" />
           <button type="submit">Sign In</button>
         </form>
+        <span class="sign-up-span">If you have not an account <a href="/register.html">Sign Up</a></span>
       </div>
     </div>
-
-    <script>
-      function onload() {
-        console.log(localStorage.getItem("token"));
-
-        if (localStorage.getItem("token")) {
-          window.location.replace("/");
-        }
-      }
-    </script>
 
     <script src="js/login.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>

@@ -139,3 +139,6 @@ button:disabled {
   font-weight: 300;
   padding: 12px 24px 0;
 }
+.sign-up-span {
+  font-size: 0.7em;
+}

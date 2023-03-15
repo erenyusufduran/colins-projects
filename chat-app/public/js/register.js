@@ -1,5 +1,11 @@
 const registerForm = document.querySelector("#register-form");
 
+const registerOnload = () => {
+  if (localStorage.getItem("token")) {
+    window.location.replace("/");
+  }
+};
+
 registerForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const response = await axios.post("/api/users", {

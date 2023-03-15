@@ -1,5 +1,11 @@
 const loginForm = document.querySelector("#login-form");
 
+const loginOnload = () => {
+  if (localStorage.getItem("token")) {
+    window.location.replace("/");
+  }
+};
+
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const response = await axios.post("/api/users/login", {
