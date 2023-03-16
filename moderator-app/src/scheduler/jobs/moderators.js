@@ -41,7 +41,7 @@ const chooseModerators = async (governement) => {
 const updateChoosedModerator = async (choosedMods, sprint) => {
   await Moderator.updateOne(choosedMods[0], [{ $set: { isChoosable: false } }, { $set: { selectedSprint: sprint } }]);
   await Moderator.updateOne(choosedMods[1], [{ $set: { isChoosable: false } }, { $set: { selectedSprint: sprint } }]);
-  await sendModeratorEmail(choosedMods[0], choosedMods[1]);
+  await sendModeratorEmail(choosedMods[0], choosedMods[1], sprint);
 };
 
 module.exports = { chooseModerators, updateChoosedModerator };
