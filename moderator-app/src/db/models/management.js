@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const governementSchema = new mongoose.Schema({
+const ManagementSchema = new mongoose.Schema({
   // our scheduler works every monday, but our sprints are 2 weeks.
   // so I use a boolean for skip weeks.
   skipWeek: {
@@ -14,6 +14,6 @@ const governementSchema = new mongoose.Schema({
   },
 });
 
-const Governement = mongoose.model("Governement", governementSchema);
+const Management = mongoose.model("Management", ManagementSchema);
 
-module.exports = Governement;
+module.exports = Management;

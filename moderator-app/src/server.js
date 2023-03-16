@@ -1,6 +1,6 @@
 const express = require("express");
-require("./src/db/mongodb");
-const { cronMethod } = require("./src/scheduler");
+require("./db/loaders/mongoose");
+const { cronMethod } = require("./scheduler/scheduler");
 
 const PORT = process.env.PORT || 3000;
 const app = express();

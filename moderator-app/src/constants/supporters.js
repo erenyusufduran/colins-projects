@@ -1,5 +1,5 @@
-// Current moderators
-const moderators = [
+// Current supporters
+const supporters = [
   { name: "Yağmur", surname: "Akın" },
   { name: "Büşra", surname: "Biner" },
   { name: "Çağrı", surname: "Örskaya" },
@@ -10,4 +10,4 @@ const moderators = [
   { name: "Taygun", surname: "Karpuzoğlu" },
 ];
 
-module.exports = { moderators };
+module.exports = { supporters };

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const moderatorSchema = new mongoose.Schema({
+const SupporterSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -24,6 +24,6 @@ const moderatorSchema = new mongoose.Schema({
   },
 });
 
-const Moderator = mongoose.model("Moderator", moderatorSchema);
+const Supporter = mongoose.model("Supporter", SupporterSchema);
 
-module.exports = Moderator;
+module.exports = Supporter;
