@@ -4,7 +4,9 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   const room = await Room.findOne({ name: req.body.name });
-  if (room) return res.status(400).send({ error: "Room already exists!" });
+  if (room) {
+    return res.send(room);
+  }
   const newRoom = new Room({ name: req.body.name });
   await newRoom.save();
   res.send(newRoom);
