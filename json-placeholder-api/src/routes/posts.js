@@ -4,9 +4,13 @@ const axios = require("axios");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
+  let { userId } = req.query;
+  if (userId) {
+    userId = null;
+  }
   const response = await axios({
     method: "get",
-    url: "https://jsonplaceholder.typicode.com/posts/",
+    url: `https://jsonplaceholder.typicode.com/posts?userId=${userId}`,
   });
   res.send(response.data);
 });
