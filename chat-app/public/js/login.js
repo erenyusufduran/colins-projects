@@ -14,6 +14,8 @@ loginForm.addEventListener("submit", async (e) => {
   });
 
   if (response.status === 200) {
+    localStorage.setItem("user-id", response.data.user._id);
+    localStorage.setItem("user-name", response.data.user.name);
     localStorage.setItem("token", `Bearer ${response.data.token}`);
     window.location.replace("/");
   } else {
