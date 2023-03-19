@@ -44,8 +44,7 @@ io.on("connection", (socket) => {
     socket.to(room).emit("chatroom_users", chatRoomUsers);
     socket.emit("chatroom_users", chatRoomUsers);
 
-    const dbMessages = await Message.find({ room: room }).sort({ $createdAt: 1 }).limit(100);
-    console.log(dbMessages);
+    const dbMessages = await Message.find({ room: room }).limit(100);
     socket.emit("last_100_messages", dbMessages);
   });
 
