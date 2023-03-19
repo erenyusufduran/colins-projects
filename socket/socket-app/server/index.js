@@ -68,6 +68,19 @@ io.on("connection", (socket) => {
       createdTime,
     });
   });
+
+  socket.on("disconnect", () => {
+    const user = allUsers.find((user) => user.id === socket.id);
+    if (user?.username) {
+      allUsers = allUsers.filter((user) => user.id !== socket.id);
+      socket.to(chatRoom).emit("chatroom_users", allUsers);
+      socket.to(chatRoom).emit("receive_message", {
+        username: CHAT_BOT,
+        message: `${user.username} has disconnected from the chat`,
+        createdTime,
+      });
+    }
+  });
 });
 
 server.listen(PORT, () => `Server is running on port ${PORT}`);
