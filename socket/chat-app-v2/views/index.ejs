@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" con,tent="width=device-width, initial-scale=1.0" />
+    <title>Chat App</title>
+    <style>
+      body {
+        width: 100vw;
+        height: 100vh;
+      }
+      .centered-form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .centered-form input,
+      .centered-form button {
+        padding: 8px 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="room-container">
+      <% Object.keys(rooms).forEach((room) => { %>
+      <div><a href="/<%= room %> "><%= room %></a> - <span><%= rooms[room].count %></span></div>
+      <% }) %>
+    </div>
+    <div class="centered-form">
+      <form action="/room" method="POST">
+        <input type="text" name="room" required />
+        <button type="submit">Open Room</button>
+      </form>
+    </div>
+  </body>
+</html>
