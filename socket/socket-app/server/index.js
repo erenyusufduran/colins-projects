@@ -54,6 +54,20 @@ io.on("connection", (socket) => {
     const dbMessage = new Message({ message, username, room });
     await dbMessage.save();
   });
+
+  socket.on("leave_room", (data) => {
+    const { username, room } = data;
+    socket.leave(room);
+    const createdTime = Date.now();
+
+    allUsers = allUsers.filter((user) => user.id !== socket.id);
+    socket.to(room).emit("chatroom_users", allUsers);
+    socket.to(room).emit("receive_message", {
+      username: CHAT_BOT,
+      message: `${username} has left the chat`,
+      createdTime,
+    });
+  });
 });
 
 server.listen(PORT, () => `Server is running on port ${PORT}`);
