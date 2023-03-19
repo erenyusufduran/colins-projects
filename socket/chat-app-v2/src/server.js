@@ -1,7 +1,12 @@
 const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
-const { rooms, addUser } = require("./utils/users");
+const ejs = require("ejs");
+const { rooms, addUser, removeUser } = require("./utils/users");
+
+require("./db/mongoose");
+
+const Room = require("./db/models/room");
 
 const app = express();
 const server = http.createServer(app);
@@ -14,32 +19,62 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.render("index", { rooms });
+let ejsOptions = {
+  async: true,
+};
+
+app.engine("ejs", async (path, data, cb) => {
+  try {
+    let html = await ejs.renderFile(path, data, ejsOptions);
+    cb(null, html);
+  } catch (error) {
+    cb(error, "");
+  }
 });
 
-app.post("/room", (req, res) => {
-  if (rooms[req.body.room] !== undefined) {
-    return res.redirect("/");
+const stardardResponse = (err, html, res) => {
+  if (err) {
+    console.log(err);
+    return res.status(500).render("index", { page: 500, error: err });
+  } else {
+    return res.status(200).send({ rooms: html.rooms });
   }
-  rooms[req.body.room] = { users: [], count: 0 };
-  res.redirect(req.body.room);
+};
+
+app.get("/", (req, res) => {
+  res.render("index", { rooms }, (err, html) => stardardResponse(err, html, res));
+});
+
+app.post("/room", async (req, res) => {
+  const room = new Room(req.body);
+  try {
+    await room.save();
+    res.redirect(room.name);
+  } catch (error) {
+    console.log(error.message);
+    res.redirect("/");
+  }
 });
 
 app.get("/:room", (req, res) => {
-  if (rooms[req.params.room] === undefined) {
+  const room = Room.findOne({ name: req.params.room });
+  if (!room) {
     return res.redirect("/");
   }
-  res.render("room", { roomName: req.params.room });
+  res.render("room", { room: req.name });
 });
 
 io.on("connection", (socket) => {
   console.log("Websocket Connection");
 
-  socket.on("join", ({ username, _id }, room) => {
-    addUser({ id: _id, username, room });
+  socket.on("join", ({ username }, room) => {
+    addUser({ id: socket.id, username, room });
     socket.join(room);
-    socket.emit("message", { username, _id, room });
+    socket.emit("message", username);
+  });
+
+  socket.on("disconnect", () => {
+    removeUser(socket.id);
   });
 });
 

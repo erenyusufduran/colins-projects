@@ -19,12 +19,41 @@
       .centered-form button {
         padding: 8px 12px;
       }
+      .room-cont {
+        width: 250px;
+        display: inline-block;
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
+        padding: 10px;
+        text-align: center;
+      }
+      .room-cont .rooms {
+        font-size: 1.2em;
+      }
+      .room-cont .rooms a {
+        text-decoration: none;
+        color: lightcoral;
+      }
     </style>
   </head>
   <body>
-    <div id="room-container">
-      <% Object.keys(rooms).forEach((room) => { %>
-      <div><a href="/<%= room %> "><%= room %></a> - <span><%= rooms[room].count %></span></div>
+    <div id="room-container" class="room-cont">
+      <h2>ROOMS</h2>
+      <hr />
+      <!-- <div class="rooms">
+        <% if (rooms.length !== 0) { %> <% Object.keys(rooms).forEach((room) => { %>
+        <div>
+          <strong><a href="/<%= room %> "><%= room %></a></strong> - <span><%= rooms[room].usersCount %></span>
+        </div>
+        <% })} %>
+      </div>
+    </div> -->
+
+    <div class="rooms">
+      <% rooms.forEach(room => { %>
+        <div>
+          <strong><%= room.name %></strong>
+        </div>
       <% }) %>
     </div>
     <div class="centered-form">

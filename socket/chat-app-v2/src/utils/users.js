@@ -1,13 +1,6 @@
-const rooms = {
-  social: {
-    users: [],
-    count: 0,
-  },
-  union: {
-    users: [],
-    count: 0,
-  },
-};
+const Room = require("../db/models/room");
+
+const rooms = Room.find({});
 
 const addUser = ({ id, username, room }) => {
   Object.values(rooms)[0].users.push({ _id: id, username });
