@@ -1,17 +1,6 @@
 {
   "clients": [
     {
-      "id": "59761c23b30d971669fb42ff",
-      "isActive": true,
-      "age": 36,
-      "name": "Dunlap Hubbard",
-      "gender": "male",
-      "company": "CEDWARD",
-      "email": "dunlaphubbard@cedward.com",
-      "address": "169 Rutledge Street, Konterra, Northern Mariana Islands, 8551",
-      "last_name": "Connick"
-    },
-    {
       "id": "59761c233d8d0f92a6b0570d",
       "isActive": true,
       "age": 24,
@@ -97,16 +86,6 @@
       "age": 21,
       "name": "Gökşean Duran",
       "gender": "female",
-      "company": "COLNIS",
-      "email": "ernyduran@gmail.com",
-      "address": "169 Rutledge Street, Konterra, Northern Mariana Islands, 8551"
-    },
-    {
-      "id": "1299252a49d173oq10y1s0f",
-      "isActive": false,
-      "age": 21,
-      "name": "Gökşean Duran",
-      "gender": "male",
       "company": "COLNIS",
       "email": "ernyduran@gmail.com",
       "address": "169 Rutledge Street, Konterra, Northern Mariana Islands, 8551"
