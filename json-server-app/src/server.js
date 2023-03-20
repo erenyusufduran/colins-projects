@@ -15,7 +15,6 @@ server.use(
     if (req.method === "POST") {
       validate(req, res, next);
     } else if (req.method === "GET") {
-      console.log(req.query);
       if (!req.query.isActive) {
         let redirectUrl = req.originalUrl;
         if (req.query === {}) {
@@ -23,7 +22,6 @@ server.use(
         } else {
           redirectUrl += "&isActive=true";
         }
-
         return res.redirect(redirectUrl);
       }
       next();
