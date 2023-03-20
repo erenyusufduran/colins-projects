@@ -2,7 +2,6 @@ const validator = require("validator");
 
 const validate = (req, res, next) => {
   const { age, name, gender, company, email, address } = req.body;
-  console.log(gender);
   if (
     gender !== "male" ||
     typeof age !== "number" ||

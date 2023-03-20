@@ -14,6 +14,19 @@ server.use(
   (req, res, next) => {
     if (req.method === "POST") {
       validate(req, res, next);
+    } else if (req.method === "GET") {
+      console.log(req.query);
+      if (!req.query.isActive) {
+        let redirectUrl = req.originalUrl;
+        if (req.query === {}) {
+          redirectUrl += "?isActive=true";
+        } else {
+          redirectUrl += "&isActive=true";
+        }
+
+        return res.redirect(redirectUrl);
+      }
+      next();
     }
   },
   router
