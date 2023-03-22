@@ -19,7 +19,6 @@ const RoomAndUsers = ({ socket, username, room }) => {
   const leaveRoom = () => {
     const createdAt = Date.now();
     socket.emit("leave_room", { username, room, createdAt });
-    // Redirect to home page
     navigate("/", { replace: true });
   };
 

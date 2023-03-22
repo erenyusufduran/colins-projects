@@ -6,7 +6,6 @@ const Messages = ({ socket }) => {
 
   const messagesColumnRef = useRef(null);
 
-  // Runs whenever a socket event is recieved from the server
   useEffect(() => {
     socket.on("receive_message", (data) => {
       console.log(data);
@@ -20,7 +19,6 @@ const Messages = ({ socket }) => {
       ]);
     });
 
-    // Remove event listener on component unmount
     return () => socket.off("receive_message");
   }, [socket]);
 
@@ -36,7 +34,6 @@ const Messages = ({ socket }) => {
     messagesColumnRef.current.scrollTop = messagesColumnRef.current.scrollHeight;
   }, [messagesRecieved]);
 
-  // dd/mm/yyyy, hh:mm:ss
   function formatDateFromTimestamp(timestamp) {
     const date = new Date(timestamp);
     return date.toLocaleString();
