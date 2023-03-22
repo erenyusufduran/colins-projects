@@ -6,11 +6,13 @@ const cors = require("cors");
 const { Server } = require("socket.io");
 const Message = require("./db/models/message");
 const Room = require("./db/models/room");
+const router = require("./routes");
 
 const PORT = process.env.PORT || 4000;
 const app = express();
 
 app.use(cors());
+app.use(router);
 
 const server = http.createServer(app);
 const io = new Server(server, {
