@@ -7,7 +7,10 @@ clientsRouter.get("/", async (req, res) => {
   try {
     const response = await axios({
       method: "get",
-      url: "http://localhost:3000/clients?isActive=true",
+      url: "http://localhost:3000/clients",
+      params: {
+        isActive: true,
+      },
     });
     res.send(response.data);
   } catch (error) {
