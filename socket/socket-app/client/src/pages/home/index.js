@@ -2,6 +2,7 @@ import styles from "./styles.module.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
+import axios from "axios";
 
 const customStyles = {
   content: {
@@ -16,6 +17,7 @@ const customStyles = {
 
 const Home = ({ username, setUsername, room, setRoom, socket }) => {
   const navigate = useNavigate();
+  const [rooms, setRooms] = useState([]);
 
   let subtitle;
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -43,6 +45,14 @@ const Home = ({ username, setUsername, room, setRoom, socket }) => {
       navigate("/chat", { replace: true });
     }
   };
+
+  useEffect(() => {
+    const getRooms = async () => {
+      const response = await axios("http://localhost:4000/api/rooms");
+      setRooms(response.data);
+    };
+    getRooms();
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -83,11 +93,13 @@ const Home = ({ username, setUsername, room, setRoom, socket }) => {
         <input className={styles.input} placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
 
         <select className={styles.input} onChange={(e) => setRoom(e.target.value)}>
-          <option>-- Select Room --</option>
-          <option value="javascript">JavaScript</option>
-          <option value="node">Node</option>
-          <option value="express">Express</option>
-          <option value="react">React</option>
+          <option disabled>-- Select Room --</option>
+          {rooms.length !== 0 &&
+            rooms.map((room) => (
+              <option key={room._id} value={room.name}>
+                {room.name.toUpperCase()}
+              </option>
+            ))}
         </select>
 
         <button className="btn btn-secondary" style={{ width: "100%" }} onClick={joinOrCreateRoom}>
