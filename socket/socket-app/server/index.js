@@ -31,11 +31,11 @@ io.on("connection", (socket) => {
     const { username, room } = data;
     socket.join(room);
 
-    let createdTime = Date.now();
+    let createdAt = Date.now();
     socket.to(room).emit("receive_message", {
       message: `Welcome ${username}`,
       username: CHAT_BOT,
-      createdTime,
+      createdAt,
     });
 
     chatRoom = room;
@@ -49,7 +49,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send_message", async (data) => {
-    const { message, username, room, createdTime } = data;
+    const { message, username, room, createdAt } = data;
     io.in(room).emit("receive_message", data);
     const dbMessage = new Message({ message, username, room });
     await dbMessage.save();
@@ -58,26 +58,27 @@ io.on("connection", (socket) => {
   socket.on("leave_room", (data) => {
     const { username, room } = data;
     socket.leave(room);
-    const createdTime = Date.now();
+    const createdAt = Date.now();
 
     allUsers = allUsers.filter((user) => user.id !== socket.id);
     socket.to(room).emit("chatroom_users", allUsers);
     socket.to(room).emit("receive_message", {
       username: CHAT_BOT,
       message: `${username} has left the chat`,
-      createdTime,
+      createdAt,
     });
   });
 
   socket.on("disconnect", () => {
     const user = allUsers.find((user) => user.id === socket.id);
     if (user?.username) {
+      const createdAt = Date.now();
       allUsers = allUsers.filter((user) => user.id !== socket.id);
       socket.to(chatRoom).emit("chatroom_users", allUsers);
       socket.to(chatRoom).emit("receive_message", {
         username: CHAT_BOT,
         message: `${user.username} has disconnected from the chat`,
-        createdTime,
+        createdAt,
       });
     }
   });

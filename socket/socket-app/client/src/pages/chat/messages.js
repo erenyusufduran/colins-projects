@@ -15,7 +15,7 @@ const Messages = ({ socket }) => {
         {
           message: data.message,
           username: data.username,
-          createdTime: data.createdTime,
+          createdAt: data.createdAt,
         },
       ]);
     });
@@ -48,7 +48,7 @@ const Messages = ({ socket }) => {
         <div className={styles.message} key={i}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <span className={styles.msgMeta}>{msg.username}</span>
-            <span className={styles.msgMeta}>{formatDateFromTimestamp(msg.createdTime)}</span>
+            <span className={styles.msgMeta}>{formatDateFromTimestamp(msg.createdAt)}</span>
           </div>
           <p className={styles.msgText}>{msg.message}</p>
           <br />
