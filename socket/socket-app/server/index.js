@@ -5,6 +5,7 @@ const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
 const Message = require("./db/models/message");
+const Room = require("./db/models/room");
 
 const PORT = process.env.PORT || 4000;
 const app = express();
@@ -28,7 +29,14 @@ io.on("connection", (socket) => {
   console.log(`User connected ${socket.id}`);
 
   socket.on("join_room", async (data) => {
-    const { username, room } = data;
+    const { username } = data;
+    let { room } = data;
+    const dbRoom = await Room.findOne({ name: room });
+    if (!dbRoom) {
+      room = new Room({ name: room });
+      await room.save();
+      room = room.name;
+    }
     socket.join(room);
 
     let createdAt = Date.now();
@@ -49,7 +57,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send_message", async (data) => {
-    const { message, username, room, createdAt } = data;
+    const { message, username, room } = data;
     io.in(room).emit("receive_message", data);
     const dbMessage = new Message({ message, username, room });
     await dbMessage.save();
@@ -57,6 +65,7 @@ io.on("connection", (socket) => {
 
   socket.on("leave_room", (data) => {
     const { username, room } = data;
+
     socket.leave(room);
     const createdAt = Date.now();
 
