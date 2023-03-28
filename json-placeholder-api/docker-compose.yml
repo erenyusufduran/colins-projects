@@ -1,0 +1,11 @@
+version: '3.4'
+services:
+  placeholderapi:
+    build: .
+    ports: 
+      - 3000:3000
+    networks:
+      - bridge
+networks:
+  bridge:
+    

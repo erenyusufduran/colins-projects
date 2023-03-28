@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
   try {
     const response = await axios({
       method: "get",
-      url: !id
+      url: !postId
         ? "https://jsonplaceholder.typicode.com/comments/"
         : `https://jsonplaceholder.typicode.com/comments?postId=${postId}`,
     });
