@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+  mongo: 
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
+
+  supportapp:
+    image: moderatorapp
+    build:
+      context: . 
+      dockerfile: ./Dockerfile
+    environment:
+      MONGODB_URL: mongodb://mongo:27017/moderatorApp
+      NODE_ENV: development
+    ports:
+      - 3002:3002
+
+
+volumes:
+  mongodb_data_container:
