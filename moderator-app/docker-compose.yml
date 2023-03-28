@@ -15,6 +15,7 @@ services:
       dockerfile: ./Dockerfile
     environment:
       MONGODB_URL: mongodb://mongo:27017/moderatorApp
+      PORT: 3002
       NODE_ENV: development
     ports:
       - 3002:3002
