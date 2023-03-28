@@ -1,0 +1,34 @@
+version: '3.4'
+
+services:
+  mongo:
+    image: mongo:latest
+    ports: 
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
+
+  chat-app-server:
+    image: chat-app-server
+    build:
+      context: server
+      dockerfile: ./Dockerfile
+    environment:
+      MONGO_URI: mongodb://mongo:27017/chatApp
+      PORT: 4000
+      NODE_ENV: production
+    ports:
+      - 4000:4000
+
+  chat-app-client:
+    image: chat-app-client
+    build:
+      context: client
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:3000
+
+volumes:
+  mongodb_data_container:
