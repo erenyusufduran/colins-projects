@@ -38,7 +38,7 @@ const transactionsToDB = async () => {
       account: account._id,
       type: rec.Type.toLowerCase(),
       tag: rec.Tag,
-      sum: parseInt(rec.Sum),
+      sum: parseInt(rec.Sum.replace(",", "")),
       commentText: rec["Comment text"],
     });
   });
