@@ -1,5 +1,6 @@
 const xlsx = require("xlsx");
 const Transaction = require("../models/transactions");
+const Account = require("../models/accounts");
 
 const wb = xlsx.readFile("./data/paymaster.xlsx", { cellDates: true });
 
@@ -11,10 +12,18 @@ const transactionsToDB = async () => {
     const dateArr = strDate.split("/");
     const date = new Date(`${dateArr[2]}-${dateArr[1]}-${dateArr[0]}`);
 
+    const accountName = rec.Account.toLowerCase();
+    let account = await Account.findOne({ name: accountName });
+    if (account === null) {
+      account = new Account({ name: accountName });
+      await account.save();
+    }
+
     await Transaction.create({
       date,
       category: rec.Category,
       parentCategory: rec["Parent category"],
+      account: account._id,
       type: rec.Type.toLowerCase(),
       tag: rec.Tag,
       sum: parseInt(rec.Sum),
