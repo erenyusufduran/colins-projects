@@ -5,10 +5,15 @@ const AccountSchema = new mongoose.Schema({
     type: String,
     unique: true,
     trim: true,
+    lowercase: true,
   },
   balance: {
     type: Number,
     default: 0,
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false,
   },
 });
 
