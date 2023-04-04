@@ -1,10 +1,16 @@
 const express = require("express");
 const router = new express.Router();
 const Account = require("../db/models/accounts");
+const Transaction = require("../db/models/transactions");
 
 router.get("/", async (req, res) => {
   const accounts = await Account.find({ isDeleted: false }).sort({ date: -1 });
   res.send({ accounts });
+});
+
+router.get("/:accountId", async (req, res) => {
+  const transactions = await Transaction.find({ account: req.params.accountId }).sort({ date: -1 });
+  res.send({ transactions });
 });
 
 router.post("/", async (req, res) => {
