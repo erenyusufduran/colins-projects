@@ -27,6 +27,16 @@ router.get("/:id", async (req, res) => {
   return res.send({ transaction });
 });
 
+router.post("/", async (req, res) => {
+  const transaction = new Transaction(req.body);
+  try {
+    await transaction.save();
+    res.status(201).send({ transaction });
+  } catch (error) {
+    res.status(500).send({ error: "Something went wrong!" });
+  }
+});
+
 router.patch("/:id", async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ["date", "category", "parentCategory", "account", "type", "sum", "tag", "commentText"];
