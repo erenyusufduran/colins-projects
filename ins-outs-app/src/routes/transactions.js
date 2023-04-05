@@ -54,6 +54,16 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  try {
+    const transaction = await Transaction.findOneAndDelete({ _id: req.params.id });
+    if (!transaction) return res.status(404).send({ error: "There is no transaction with this id." });
+    res.send({ transaction });
+  } catch (error) {
+    res.status(500).send({ error: "Something went wrong" });
+  }
+});
+
 router.get("/init", async (req, res) => {
   await accountsToDB();
   await transactionsToDB();
