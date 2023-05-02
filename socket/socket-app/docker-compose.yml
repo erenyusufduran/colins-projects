@@ -4,7 +4,7 @@ services:
   mongo:
     image: mongo:latest
     ports: 
-      - 27017:27017
+      - 27018:27017
     volumes:
       - mongodb_data_container:/data/db
 
@@ -32,3 +32,5 @@ services:
 
 volumes:
   mongodb_data_container:
+
+# docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' f0ae
