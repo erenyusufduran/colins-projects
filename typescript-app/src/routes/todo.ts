@@ -3,12 +3,12 @@ import { Todo } from "../models";
 
 const router = express.Router();
 
-router.get("/api/todos", async (req: Request, res: Response) => {
+router.get("/todos", async (req: Request, res: Response) => {
   const todos = await Todo.find({});
   return res.status(200).send(todos);
 });
 
-router.post("/api/todo", async (req: Request, res: Response) => {
+router.post("/todos", async (req: Request, res: Response) => {
   const { title, description } = req.body;
 
   try {
