@@ -23,6 +23,11 @@ const todoSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
+  },
 });
 
 todoSchema.statics.build = (attr: ITodo) => {
@@ -30,10 +35,5 @@ todoSchema.statics.build = (attr: ITodo) => {
 };
 
 const Todo = mongoose.model<TodoDoc, TodoModelInterface>("Todo", todoSchema);
-
-Todo.build({
-  title: "Eren",
-  description: "eren",
-});
 
 export { Todo };
