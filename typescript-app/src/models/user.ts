@@ -18,6 +18,7 @@ interface UserDoc extends mongoose.Document {
 
 interface UserModelInterface extends mongoose.Model<UserDoc> {
   build(attr: IUser): UserDoc;
+  findByCredentials(email: IUser["email"], password: IUser["password"]): Promise<UserDoc>;
 }
 
 const userSchema = new mongoose.Schema({
@@ -76,7 +77,7 @@ userSchema.statics.build = (attr: IUser) => {
   return new User(attr);
 };
 
-userSchema.statics.findByCredentials = async (email, password) => {
+userSchema.statics.findByCredentials = async (email: IUser["email"], password: IUser["password"]) => {
   const user = await User.findOne({ email });
   if (!user) throw new Error("Unable to login");
 
