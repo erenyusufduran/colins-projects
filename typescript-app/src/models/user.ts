@@ -8,11 +8,16 @@ interface IUser {
   password: string;
 }
 
-interface UserDoc extends mongoose.Document {
+interface IToken {
+  token: string;
+  _id: string;
+}
+
+export interface UserDoc extends mongoose.Document {
   name: string;
   email: string;
   password: string;
-  tokens: string[];
+  tokens: IToken[];
   generateAuthToken(): Promise<string>;
 }
 

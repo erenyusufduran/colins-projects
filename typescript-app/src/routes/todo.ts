@@ -10,7 +10,6 @@ router.get("/todos", async (req: Request, res: Response) => {
 
 router.post("/todos", async (req: Request, res: Response) => {
   const { title, description } = req.body;
-
   try {
     const todo = Todo.build({ title, description });
     await todo.save();
