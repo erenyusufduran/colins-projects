@@ -32,10 +32,10 @@ router.post("/users/login", async (req: Request, res: Response<LoginRegisterResp
   }
 });
 
-router.post("/users/logout", auth, async (req: AuthRequest, res: Response) => {
+router.post("/users/logout", auth, async (req: AuthRequest, res: Response<void | string>) => {
   try {
     if (req.user) {
-      const tokens = req.user.tokens.filter(_token => _token.token !== req.token);
+      const tokens = req.user.tokens.filter((_token) => _token.token !== req.token);
       req.user.tokens = tokens;
       await req.user.save();
       res.send();
@@ -44,5 +44,21 @@ router.post("/users/logout", auth, async (req: AuthRequest, res: Response) => {
     res.status(500).send("Something went wrong!");
   }
 });
+
+router.post("/users/logoutEverywhere", auth, async (req: AuthRequest, res: Response<void | string>) => {
+  try {
+    if (req.user) {
+      req.user.tokens = [];
+      await req.user.save();
+      res.send();
+    }
+  } catch (error) {
+    res.status(500).send("Something went wrong!");
+  }
+});
+
+router.get("/users/me", auth, async (req: AuthRequest, res: Response<UserDoc>) => {
+  res.send(req.user);
+})
 
 export { router as userRouter };
