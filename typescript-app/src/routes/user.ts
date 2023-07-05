@@ -59,6 +59,17 @@ router.post("/users/logoutEverywhere", auth, async (req: AuthRequest, res: Respo
 
 router.get("/users/me", auth, async (req: AuthRequest, res: Response<UserDoc>) => {
   res.send(req.user);
-})
+});
+
+router.get("/users/:id", async (req: AuthRequest, res: Response<UserDoc | string>) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    if (!user) return res.status(404).send("Invalid credentials!");
+    res.status(200).send(user);
+  } catch (error) {
+    res.status(500).send("Something went wrong!");
+  }
+});
 
 export { router as userRouter };
