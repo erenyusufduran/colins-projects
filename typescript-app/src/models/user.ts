@@ -22,7 +22,7 @@ export interface UserDoc extends mongoose.Document {
 }
 
 interface UserModelInterface extends mongoose.Model<UserDoc> {
-  build(attr: IUser): UserDoc;
+  build(attr: IUser): Promise<UserDoc>;
   findByCredentials(email: IUser["email"], password: IUser["password"]): Promise<UserDoc>;
 }
 
@@ -78,8 +78,12 @@ userSchema.methods.generateAuthToken = async function () {
   return token;
 };
 
-userSchema.statics.build = (attr: IUser) => {
-  return new User(attr);
+userSchema.statics.build = async (attr: IUser) => {
+  try {
+    return await new User(attr).save();
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
 };
 
 userSchema.statics.findByCredentials = async (email: IUser["email"], password: IUser["password"]) => {

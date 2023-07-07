@@ -13,12 +13,12 @@ interface LoginRegisterResponse {
 router.post("/register", async (req: Request, res: Response<LoginRegisterResponse | string>) => {
   const { name, email, password } = req.body;
   try {
-    const user = User.build({ name, email, password });
+    const user = await User.build({ name, email, password });
     const token = await user.generateAuthToken();
     res.status(201).send({ user, token });
   } catch (error) {
     console.log(error)
-    res.status(500).send("Something went wrong!");
+    res.status(500).send((error as Error).message);
   }
 });
 
