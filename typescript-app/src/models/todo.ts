@@ -1,4 +1,4 @@
-import mongoose, { ObjectId } from "mongoose";
+import { Document, Model, Schema, ObjectId, model } from "mongoose";
 
 interface ITodo {
   title: string;
@@ -6,17 +6,17 @@ interface ITodo {
   owner: ObjectId;
 }
 
-interface TodoDoc extends mongoose.Document {
+interface TodoDoc extends Document {
   title: string;
   description: string;
   owner: ObjectId;
 }
 
-interface TodoModelInterface extends mongoose.Model<TodoDoc> {
+interface TodoModelInterface extends Model<TodoDoc> {
   build(attr: ITodo): TodoDoc;
 }
 
-const todoSchema = new mongoose.Schema({
+const todoSchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -26,7 +26,7 @@ const todoSchema = new mongoose.Schema({
     required: true,
   },
   owner: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     required: true,
     ref: "User",
   },
@@ -36,6 +36,6 @@ todoSchema.statics.build = (attr: ITodo) => {
   return new Todo(attr);
 };
 
-const Todo = mongoose.model<TodoDoc, TodoModelInterface>("Todo", todoSchema);
+const Todo = model<TodoDoc, TodoModelInterface>("Todo", todoSchema);
 
 export { Todo };

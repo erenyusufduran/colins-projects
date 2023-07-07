@@ -1,9 +1,9 @@
-import express, { Request, Response } from "express";
+import { Router, Request, Response } from "express";
 import { Todo, User } from "../models";
 import { auth, AuthRequest } from "../middlewares/auth";
 import { UserDoc } from "../models/user";
 
-const router = express.Router();
+const router = Router();
 
 interface LoginRegisterResponse {
   user: UserDoc;
@@ -65,6 +65,7 @@ router.get("/me", auth, async (req: AuthRequest, res: Response<UserDoc>) => {
 router.delete("/me", auth, async (req: AuthRequest, res) => {
   try {
     await req.user?.deleteOne();
+    await Todo.deleteMany({owner: req.user?._id});
     res.status(200).send("Deleted successfully");
   } catch (error) {
     res.status(500).send((error as Error).message);

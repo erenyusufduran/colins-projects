@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { Document, Model, Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -13,7 +13,7 @@ interface IToken {
   _id: string;
 }
 
-export interface UserDoc extends mongoose.Document {
+export interface UserDoc extends Document {
   name: string;
   email: string;
   password: string;
@@ -21,12 +21,12 @@ export interface UserDoc extends mongoose.Document {
   generateAuthToken(): Promise<string>;
 }
 
-interface UserModelInterface extends mongoose.Model<UserDoc> {
+interface UserModelInterface extends Model<UserDoc> {
   build(attr: IUser): Promise<UserDoc>;
   findByCredentials(email: IUser["email"], password: IUser["password"]): Promise<UserDoc>;
 }
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   name: { type: String, required: true, trim: true },
   email: {
     type: String,
@@ -103,6 +103,6 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-const User = mongoose.model<UserDoc, UserModelInterface>("User", userSchema);
+const User = model<UserDoc, UserModelInterface>("User", userSchema);
 
 export { User };
