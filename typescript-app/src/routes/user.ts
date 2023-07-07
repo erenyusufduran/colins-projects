@@ -10,18 +10,19 @@ interface LoginRegisterResponse {
   token: string;
 }
 
-router.post("/users/register", async (req: Request, res: Response<LoginRegisterResponse | string>) => {
+router.post("/register", async (req: Request, res: Response<LoginRegisterResponse | string>) => {
   const { name, email, password } = req.body;
   try {
     const user = User.build({ name, email, password });
     const token = await user.generateAuthToken();
     res.status(201).send({ user, token });
   } catch (error) {
+    console.log(error)
     res.status(500).send("Something went wrong!");
   }
 });
 
-router.post("/users/login", async (req: Request, res: Response<LoginRegisterResponse | string>) => {
+router.post("/login", async (req: Request, res: Response<LoginRegisterResponse | string>) => {
   const { email, password } = req.body;
   try {
     const user = await User.findByCredentials(email, password);
@@ -32,7 +33,7 @@ router.post("/users/login", async (req: Request, res: Response<LoginRegisterResp
   }
 });
 
-router.post("/users/logout", auth, async (req: AuthRequest, res: Response<void | string>) => {
+router.post("/logout", auth, async (req: AuthRequest, res: Response<void | string>) => {
   try {
     if (req.user) {
       const tokens = req.user.tokens.filter((_token) => _token.token !== req.token);
@@ -45,7 +46,7 @@ router.post("/users/logout", auth, async (req: AuthRequest, res: Response<void |
   }
 });
 
-router.post("/users/logoutEverywhere", auth, async (req: AuthRequest, res: Response<void | string>) => {
+router.post("/logoutEverywhere", auth, async (req: AuthRequest, res: Response<void | string>) => {
   try {
     if (req.user) {
       req.user.tokens = [];
@@ -57,11 +58,11 @@ router.post("/users/logoutEverywhere", auth, async (req: AuthRequest, res: Respo
   }
 });
 
-router.get("/users/me", auth, async (req: AuthRequest, res: Response<UserDoc>) => {
+router.get("/me", auth, async (req: AuthRequest, res: Response<UserDoc>) => {
   res.send(req.user);
 });
 
-router.get("/users/:id", async (req: AuthRequest, res: Response<UserDoc | string>) => {
+router.get("/:id", async (req: AuthRequest, res: Response<UserDoc | string>) => {
   const { id } = req.params;
   try {
     const user = await User.findById(id);

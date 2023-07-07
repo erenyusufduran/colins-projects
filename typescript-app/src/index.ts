@@ -7,7 +7,7 @@ import { userRouter } from "./routes";
 const app = express();
 
 app.use(json());
-app.use("/api", userRouter);
-app.use("/api", todoRouter);
+app.use("/api/users", userRouter);
+app.use("/api/todos", todoRouter);
 
 export default app;
