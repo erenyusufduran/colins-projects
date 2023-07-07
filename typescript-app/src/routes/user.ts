@@ -29,7 +29,7 @@ router.post("/login", async (req: Request, res: Response<LoginRegisterResponse |
     const token = await user.generateAuthToken();
     res.send({ user, token });
   } catch (error) {
-    res.status(400).send("Invalid credentials");
+    res.status(400).send((error as Error).message);
   }
 });
 
@@ -42,7 +42,7 @@ router.post("/logout", auth, async (req: AuthRequest, res: Response<void | strin
       res.send();
     }
   } catch (error) {
-    res.status(500).send("Something went wrong!");
+    res.status(500).send((error as Error).message);
   }
 });
 

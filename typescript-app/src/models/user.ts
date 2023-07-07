@@ -88,10 +88,10 @@ userSchema.statics.build = async (attr: IUser) => {
 
 userSchema.statics.findByCredentials = async (email: IUser["email"], password: IUser["password"]) => {
   const user = await User.findOne({ email });
-  if (!user) throw new Error("Unable to login");
+  if (!user) throw new Error("There is no account with this id");
 
   const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) throw new Error("Password is not matches");
+  if (!isMatch) throw new Error("Passwords is wrong");
   return user;
 };
 
