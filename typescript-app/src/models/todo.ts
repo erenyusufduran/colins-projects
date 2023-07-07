@@ -1,13 +1,15 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
 interface ITodo {
   title: string;
   description: string;
+  owner: ObjectId;
 }
 
 interface TodoDoc extends mongoose.Document {
   title: string;
   description: string;
+  owner: ObjectId;
 }
 
 interface TodoModelInterface extends mongoose.Model<TodoDoc> {

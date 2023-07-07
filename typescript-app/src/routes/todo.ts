@@ -1,21 +1,36 @@
 import express, { Request, Response } from "express";
 import { Todo } from "../models";
+import { AuthRequest, auth } from "../middlewares/auth";
 
 const router = express.Router();
 
-router.get("/", async (req: Request, res: Response) => {
-  const todos = await Todo.find({});
-  return res.status(200).send(todos);
+router.get("/", auth, async (req: AuthRequest, res: Response) => {
+  try {
+    const todos = await Todo.find({ owner: req.user?._id });
+    return res.status(200).send(todos);
+  } catch (error) {
+    res.status(500).send((error as Error).message);
+  }
 });
 
-router.post("/", async (req: Request, res: Response) => {
+router.get("/:_id", async (req: Request, res: Response) => {
+  const { _id } = req.params;
+  try {
+    const todos = await Todo.find({ owner: _id });
+    res.send(todos);
+  } catch (error) {
+    res.status(400).send((error as Error).message);
+  }
+});
+
+router.post("/", auth, async (req: AuthRequest, res: Response) => {
   const { title, description } = req.body;
   try {
-    const todo = Todo.build({ title, description });
+    const todo = Todo.build({ title, description, owner: req.user?._id });
     await todo.save();
-    return res.status(201).send(todo);
+    res.status(201).send(todo);
   } catch (error) {
-    return res.status(500).send({ error: "Something went wrong!" });
+    res.status(500).send((error as Error).message);
   }
 });
 
