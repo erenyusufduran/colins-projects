@@ -3,6 +3,10 @@ import { Todo, TodoWithId, Todos } from "../models/todo.model";
 import { Service } from "../interfaces/service.interface";
 
 export class TodoService implements Service<Todo> {
+  static createNewTodoService(): TodoService {
+    return new TodoService();
+  }
+
   find = async (query?: Filter<TodoWithId>): Promise<TodoWithId[]> => {
     const todos = await Todos.find({ query }).toArray();
     return todos;
