@@ -1,15 +1,6 @@
-import express from "express";
+import "reflect-metadata";
 import { mongoLoader } from "./loaders/mongo.loader";
+import { expressLoader } from "./loaders/express.loader";
+import { bootstrapMicroframework } from "microframework";
 
-const app = express();
-const PORT = 3000;
-
-app.use(express.json());
-
-mongoLoader()
-  .then(() => {
-    app.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
-  })
-  .catch((error: Error) => {
-    throw new Error(error.message);
-  });
+bootstrapMicroframework([mongoLoader, expressLoader]).then(() => console.log("Running..."));

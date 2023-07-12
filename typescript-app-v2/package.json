@@ -12,7 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
+    "microframework": "^0.6.4",
     "mongodb": "^5.7.0",
+    "reflect-metadata": "^0.1.13",
+    "routing-controllers": "^0.10.4",
     "zod": "^3.21.4"
   },
   "devDependencies": {
