@@ -1,13 +1,13 @@
 import { createExpressServer } from "routing-controllers";
-import { TodoController } from "../api/controller/todo.controller";
 import { MicroframeworkLoader, MicroframeworkSettings } from "microframework";
+import { TodoController, UserController } from "../api/controller";
 
 const PORT = process.env.PORT || 3000;
 
 export const expressLoader: MicroframeworkLoader = async (settings: MicroframeworkSettings | undefined) => {
   const expressApp = createExpressServer({
     routePrefix: "/api",
-    controllers: [TodoController],
+    controllers: [TodoController, UserController],
     classTransformer: false,
   });
 
