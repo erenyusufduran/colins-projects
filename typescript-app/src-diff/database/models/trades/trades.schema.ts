@@ -1,10 +1,14 @@
 import { Schema } from "mongoose";
 import { TimeframeOptions } from "./trades.types";
+import { build } from "./trades.statics";
 
 const TradeSchema = new Schema({
   date: Date,
   pair: String,
-  timeframe: TimeframeOptions,
+  timeframe: {
+    type: String,
+    enum: Object.values(TimeframeOptions),
+  },
   shortLong: {
     type: Boolean,
     default: true,
@@ -42,5 +46,7 @@ const TradeSchema = new Schema({
     type: String,
   },
 });
+
+TradeSchema.statics.build = build;
 
 export default TradeSchema;
