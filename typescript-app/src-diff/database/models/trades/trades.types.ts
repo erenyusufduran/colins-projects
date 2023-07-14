@@ -24,10 +24,7 @@ export enum TimeframeOptions {
 export interface ITrade {
   date?: Date;
   pair?: string;
-  timeframe?: {
-    type: String;
-    enum: TimeframeOptions;
-  };
+  timeframe?: TimeframeOptions;
   shortLong: boolean;
   entry: number;
   tp?: number;
