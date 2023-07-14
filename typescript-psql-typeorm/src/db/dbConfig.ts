@@ -1,9 +1,10 @@
 import { createConnection } from "typeorm";
-import { Client, Banker, Transaction } from "./entities";
+import { Client, Banker, Transaction } from "../entities";
 
-const main = async () => {
+
+export const loadDB = async () => {
   try {
-    const connection = await createConnection({
+    await createConnection({
       type: "postgres",
       host: "localhost",
       port: 5432,
@@ -14,10 +15,9 @@ const main = async () => {
       synchronize: true,
     });
     console.log("Connected to Postgres");
+
   } catch (error) {
     console.log(error);
     throw new Error("Unable to connect to DB");
   }
 };
-
-main();
