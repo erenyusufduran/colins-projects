@@ -1,6 +1,7 @@
 import { Schema } from "mongoose";
 import { setLastUpdated, sameEmail, generateAuthToken } from "./users.methods";
 import { findByAge, build, findByCredentials } from "./users.statics";
+import bcrypt from "bcrypt";
 
 const UserSchema = new Schema({
   username: {
@@ -46,5 +47,12 @@ UserSchema.statics.findByCredentials = findByCredentials;
 UserSchema.methods.setLastUpdated = setLastUpdated;
 UserSchema.methods.sameEmail = sameEmail;
 UserSchema.methods.generateAuthToken = generateAuthToken;
+
+UserSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  next();
+});
 
 export default UserSchema;

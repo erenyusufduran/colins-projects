@@ -7,9 +7,7 @@ export async function findByAge(min?: number, max?: number): Promise<IUserDocume
 }
 
 export async function build(user: IUser): Promise<IUserDocument> {
-  const foundUser = UserModel.findOne({username: user.username});
-  if (!foundUser) return await UserModel.create(user);
-  throw new Error("User has been already registered");
+  return await UserModel.create(user);
 }
 
 export async function findByCredentials(username: string, password: string): Promise<IUserDocument> {

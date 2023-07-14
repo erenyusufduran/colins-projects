@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export const connectMongo = () => {
-  mongoose.connect("mongodb://localhost:27017/todo-v2");
+  mongoose.connect("mongodb://localhost:27017/tradeCollection");
   const database = mongoose.connection;
   database.once("open", async () => {
     console.log("Connected to database");
