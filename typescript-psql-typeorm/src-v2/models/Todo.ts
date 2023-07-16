@@ -1,12 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, JoinColumn } from "typeorm";
 import { User } from "./User";
 
-interface ITodo {
-  name: string;
-  completed: boolean;
-  username: string;
-}
-
 @Entity("todos")
 export class Todo extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
