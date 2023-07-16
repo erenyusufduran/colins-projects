@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Res, Param, UseBefore, Delete } from "routing-controllers";
+import { Controller, Get, Post, Body, Res, Req, Param, UseBefore, Delete } from "routing-controllers";
 import { Response, json } from "express";
 import { Todo } from "../../models";
+import { AuthMiddleware, AuthRequest } from "../middlewares/AuthMiddleware";
 
 @Controller("/todos")
 export class TodoController {
@@ -27,10 +28,10 @@ export class TodoController {
 
   @Post("/")
   @UseBefore(json())
-  async create(@Body() body: Todo, @Res() res: Response): Promise<any> {
+  @UseBefore(AuthMiddleware) // neden tüm requestlerimi engelliyor?
+  async create(@Body() body: Todo, @Req() req: AuthRequest, @Res() res: Response): Promise<any> {
     try {
-      const todo = Todo.create(body);
-      await todo.save();
+      const todo = await Todo.build(body, req.user);
       return res.status(201).send(todo);
     } catch (error) {
       return res.status(500).send(error.message);
@@ -38,6 +39,7 @@ export class TodoController {
   }
 
   @Delete("/:id")
+  @UseBefore(AuthMiddleware)
   async delete(@Param("id") id: string, @Res() res: Response): Promise<any> {
     try {
       const todo = await Todo.findOneBy({ id });
