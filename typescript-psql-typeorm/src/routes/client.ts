@@ -1,13 +1,35 @@
 import { Router, Request, Response } from "express";
 import { Client, Transaction, TransactionTypes } from "../entities";
+import { createQueryBuilder } from "typeorm";
 
 const router = Router();
 
+router.get("/", async (req, res) => {
+  const clients = await createQueryBuilder("client")
+    .select("client")
+    .addSelect("client.last_name")
+    .from(Client, "client")
+    .leftJoinAndSelect("client.transactions", "transaction")
+    .where("client.balance >= :balance", { balance: 0 })
+    .getMany();
+  return res.send({ clients });
+});
+
 router.post("/", async (req: Request, res: Response) => {
-  const { firstName, lastName, email, cardNumber, balance } = req.body;
-  const client = Client.create({ first_name: firstName, last_name: lastName, email, card_number: cardNumber, balance });
-  await client.save();
-  res.status(201).send({ client });
+  try {
+    const { firstName, lastName, email, cardNumber, balance } = req.body;
+    const client = Client.create({
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      card_number: cardNumber,
+      balance,
+    });
+    await client.save();
+    res.status(201).send({ client });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 });
 
 router.post("/:clientId/transaction", async (req: Request, res: Response) => {
