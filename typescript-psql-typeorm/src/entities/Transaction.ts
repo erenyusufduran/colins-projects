@@ -17,7 +17,7 @@ export class Transaction extends BaseEntity {
   @Column({ type: "numeric" })
   amount: number;
 
-  @ManyToOne(() => Client, (client) => client.transactions)
+  @ManyToOne(() => Client, (client) => client.transactions, { onDelete: "CASCADE" })
   @JoinColumn({ name: "client_id" })
   client: Client;
 }

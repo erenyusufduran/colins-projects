@@ -30,4 +30,14 @@ router.post("/:clientId/transaction", async (req: Request, res: Response) => {
   }
 });
 
+router.delete("/:clientId", async (req, res) => {
+  try {
+    const { clientId } = req.params;
+    const response = await Client.delete(parseInt(clientId));
+    res.send({ message: response });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
 export { router as clientRouter };
