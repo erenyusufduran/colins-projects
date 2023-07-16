@@ -3,7 +3,7 @@ import { Banker } from "../entities";
 
 const router = Router();
 
-router.post("/banker", async (req, res) => {
+router.post("/", async (req, res) => {
   const { firstName, lastName, email, cardNumber, employeeNumber } = req.body;
   const banker = Banker.create({
     first_name: firstName,
