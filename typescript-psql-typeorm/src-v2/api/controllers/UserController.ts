@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Res, Param, UseBefore, Delete } from "routing-controllers";
+import { Controller, Get, Post, Body, Res, Req, Param, UseBefore, Delete } from "routing-controllers";
 import { Response, json } from "express";
 import { User } from "../../models";
+import { AuthMiddleware, AuthRequest } from "../middlewares/AuthMiddleware";
 
 @Controller("/users")
 export class UserController {
@@ -27,4 +28,11 @@ export class UserController {
       return res.status(400).send(error.message);
     }
   }
+
+  @Get("/me")
+  @UseBefore(AuthMiddleware)
+  getProfile(@Req() req: AuthRequest): User {
+    return req.user;
+  }
+
 }
