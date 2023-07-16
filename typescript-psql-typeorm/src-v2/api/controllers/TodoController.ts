@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Res, Param, UseBefore, Delete } from "routing-controllers";
 import { Response, json } from "express";
-import { Todo } from "../../models/Todo";
+import { Todo } from "../../models";
 
 @Controller("/todos")
 export class TodoController {

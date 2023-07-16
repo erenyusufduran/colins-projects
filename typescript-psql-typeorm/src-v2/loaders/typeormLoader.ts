@@ -1,4 +1,4 @@
-import { Todo } from "../models/Todo";
+import { Todo, Token, User } from "../models";
 import { DataSource } from "typeorm";
 
 export const typeormLoader = () => {
@@ -9,7 +9,7 @@ export const typeormLoader = () => {
     username: "postgres",
     password: "Col41sYs1",
     database: "typeorm-v2",
-    entities: [Todo],
+    entities: [User, Todo, Token],
     synchronize: true,
   });
 };
