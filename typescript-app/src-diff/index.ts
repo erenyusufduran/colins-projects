@@ -5,7 +5,7 @@ import { userRouter } from "./routes";
 const app = express();
 
 app.use(json());
-app.use("/users", userRouter);
+app.use("/api/users", userRouter);
 
 // app.post("/", async (req, res) => {
 //   try {

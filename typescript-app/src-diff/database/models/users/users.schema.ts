@@ -48,6 +48,15 @@ UserSchema.methods.setLastUpdated = setLastUpdated;
 UserSchema.methods.sameEmail = sameEmail;
 UserSchema.methods.generateAuthToken = generateAuthToken;
 
+UserSchema.methods.toJSON = function () {
+  const user = this;
+  const userObject = user.toObject();
+  delete userObject.password;
+  delete userObject.tokens;
+  delete userObject.avatar;
+  return userObject;
+};
+
 UserSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 10);
