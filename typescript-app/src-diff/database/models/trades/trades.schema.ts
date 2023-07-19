@@ -1,6 +1,7 @@
 import { Schema } from "mongoose";
 import { TimeframeOptions } from "./trades.types";
 import { build } from "./trades.statics";
+import { calculateProfit, calculateR, modifier } from "./trades.helper";
 
 const TradeSchema = new Schema({
   date: Date,
@@ -45,8 +46,30 @@ const TradeSchema = new Schema({
   results: {
     type: String,
   },
+  owner: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
+  },
 });
 
 TradeSchema.statics.build = build;
+
+TradeSchema.pre("save", async function (next) {
+  const trade = this;
+  if (this.isModified("entry" || "tp" || "sl" || "size" || "wl")) {
+    const { shortLong, tp, sl, entry, wl, size } = trade;
+    if (tp && sl) {
+      modifier({ shortLong, tp, sl, entry });
+      if (!(wl === undefined)) {
+        this.r = calculateR({ entry, tp, sl, wl });
+        if (size) {
+          this.profit = calculateProfit({ entry, tp, sl, size, wl });
+        }
+      }
+    }
+  }
+  next();
+});
 
 export default TradeSchema;
