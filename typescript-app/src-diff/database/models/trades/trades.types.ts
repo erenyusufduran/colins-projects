@@ -1,4 +1,4 @@
-import { Document, Model } from "mongoose";
+import { Document, Model, ObjectId } from "mongoose";
 
 export enum TimeframeOptions {
   M1 = "1 minute",
@@ -42,5 +42,5 @@ export interface ITradeDocument extends ITrade, Document {
 }
 
 export interface ITradeModel extends Model<ITradeDocument> {
-  build: (trade: ITrade) => Promise<ITradeDocument>;
+  build: (trade: ITrade, owner: ObjectId) => Promise<ITradeDocument>;
 }

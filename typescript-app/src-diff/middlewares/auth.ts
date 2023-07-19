@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { IUserDocument } from "../database/models/users/users.types";
 import { UserModel } from "../database/models/users/users.model";
 
-interface AuthRequest extends Request {
+export interface AuthRequest extends Request {
   token?: string;
   user?: IUserDocument;
 }
