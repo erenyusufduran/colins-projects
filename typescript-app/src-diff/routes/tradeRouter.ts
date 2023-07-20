@@ -5,6 +5,25 @@ import { ObjectId } from "mongoose";
 
 const router = Router();
 
+router.get("/:tradeId", auth, async (req: AuthRequest, res: Response) => {
+  try {
+    const trade = await TradeModel.findOne({ _id: req.params.tradeId, owner: req.user?._id });
+    if (!trade) return res.status(404).send({ error: `There is no trade with this id: ${req.params.id}` });
+    res.status(200).send({ trade });
+  } catch (error) {
+    res.status(500).send((error as Error).message);
+  }
+});
+
+router.get("/", auth, async (req: AuthRequest, res: Response) => {
+  try {
+    const trades = await TradeModel.find({ owner: req.user?._id });
+    res.status(200).send({ trades });
+  } catch (error) {
+    res.status(500).send((error as Error).message);
+  }
+});
+
 router.post("/", auth, async (req: AuthRequest, res: Response) => {
   const { date, pair, timeframe, shortLong, entry, tp, sl, size, wl, link, reasons, results } = req.body;
   try {
