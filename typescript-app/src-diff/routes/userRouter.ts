@@ -1,9 +1,15 @@
 import { Router, Request, Response } from "express";
 import { UserModel } from "../database/models/users/users.model";
+import { IUserDocument } from "../database/models/users/users.types";
 
 const router = Router();
 
-router.post("/register", async (req: Request, res: Response) => {
+interface IUserWithToken {
+  user: IUserDocument;
+  token: string;
+}
+
+router.post("/register", async (req: Request, res: Response<IUserWithToken | string>) => {
   const { username, email, password, age } = req.body;
   try {
     const user = await UserModel.build({ username, email, password, age });
@@ -14,7 +20,7 @@ router.post("/register", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/login", async (req: Request, res: Response) => {
+router.post("/login", async (req: Request, res: Response<IUserWithToken | string>) => {
   const { username, password } = req.body;
   try {
     const user = await UserModel.findByCredentials(username, password);
