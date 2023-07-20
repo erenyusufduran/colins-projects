@@ -30,6 +30,9 @@ const TradeSchema = new Schema({
   },
   r: {
     type: Number,
+    validate(val: number) {
+      return val.toFixed(2);
+    },
   },
   profit: {
     type: Number,
@@ -57,15 +60,13 @@ TradeSchema.statics.build = build;
 
 TradeSchema.pre("save", async function (next) {
   const trade = this;
-  if (this.isModified("entry" || "tp" || "sl" || "size" || "wl")) {
-    const { shortLong, tp, sl, entry, wl, size } = trade;
-    if (tp && sl) {
-      modifier({ shortLong, tp, sl, entry });
-      if (!(wl === undefined)) {
-        this.r = calculateR({ entry, tp, sl, wl });
-        if (size) {
-          this.profit = calculateProfit({ entry, tp, sl, size, wl });
-        }
+  const { shortLong, tp, sl, entry, wl, size } = trade;
+  if (tp && sl) {
+    modifier({ shortLong, tp, sl, entry });
+    if (!(wl === undefined)) {
+      this.r = calculateR({ entry, tp, sl, wl });
+      if (size) {
+        this.profit = calculateProfit({ entry, tp, sl, size, wl });
       }
     }
   }
