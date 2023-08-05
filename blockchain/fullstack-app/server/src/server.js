@@ -1,6 +1,8 @@
 require("dotenv").config();
+const { connectMongo } = require("./db/mongoose");
 const ethers = require("ethers");
 const { contractAddress, abi } = require("./constants");
+const Number = require("./db/models/Number");
 
 const useProvider = () => {
   const provider = new ethers.AlchemyProvider(5, process.env.ALCHEMY_API_KEY);
@@ -25,32 +27,32 @@ const getNumber = async () => {
   return number;
 };
 
-const increment = async () => {
+const increment = async (address) => {
   const contract = useContract();
-  await contract.increment();
+  await contract.increment(address);
   console.log("Incremented");
 };
 
-const decrement = async () => {
+const decrement = async (address) => {
   const contract = useContract();
-  await contract.decrement();
+  await contract.decrement(address);
   console.log("Decremented");
 };
 
-const incrementBy = async (number) => {
+const incrementBy = async (address, number) => {
   const contract = useContract();
-  await contract.incrementBy(number);
+  await contract.incrementBy(address, number);
   console.log(`Incremented with ${number}`);
 };
 
 async function main() {
-  await incrementBy(500);
+  await incrementBy("0x333A2399f8b7d898d8F20F53AD725455F679845D", 500);
   const number = await getNumber();
   console.log(number.toString());
-
+  await connectMongo();
   const contract = useContract();
-  contract.on("numberUpdated", (event) => {
-    console.log(event.toString());
+  contract.on("numberUpdated", async (address, number) => {
+    await Number.insert({ address, number: number.toString() });
   });
 }
 
