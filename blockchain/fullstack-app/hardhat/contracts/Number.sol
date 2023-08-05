@@ -4,26 +4,26 @@ pragma solidity ^0.8.9;
 contract Number {
     uint256 number = 0;
 
-    event numberUpdated(uint256 number);
+    event numberUpdated(address sender, uint256 number);
 
-    function increment() public {
+    function increment(address sender) public {
         number++;
-        emit numberUpdated(number);
+        emit numberUpdated(sender, number);
     }
 
-    function incrementBy(uint256 _number) public {
+    function incrementBy(address sender, uint256 _number) public {
         number += _number;
-        emit numberUpdated(number);
+        emit numberUpdated(sender, number);
     }
 
-    function decrement() public {
+    function decrement(address sender) public {
         number--;
-        emit numberUpdated(number);
+        emit numberUpdated(sender, number);
     }
 
-    function decrementBy(uint256 _number) public {
+    function decrementBy(address sender, uint256 _number) public {
         number -= _number;
-        emit numberUpdated(number);
+        emit numberUpdated(sender, number);
     }
 
     function getNumber() public view returns (uint256) {
