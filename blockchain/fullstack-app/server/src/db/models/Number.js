@@ -11,6 +11,6 @@ const NumberSchema = new mongoose.Schema({
   },
 });
 
-const Number = mongoose.model("Number", NumberSchema);
+const NumberModel = mongoose.model("Number", NumberSchema);
 
-module.exports = Number;
+module.exports = NumberModel;
