@@ -25,7 +25,7 @@ app.use("/sales", salesRouter);
 
 mongoose
   .connect(process.env.MONGO_URL)
-  .then(() => {
+  .then(async () => {
     app.listen(process.env.PORT, () => console.log("Server is listening on port", process.env.PORT));
   })
   .catch((err) => console.log(`${err} occured`));
